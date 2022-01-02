@@ -1,0 +1,6 @@
+[preprocessing]
+lower_HSV = [0, 0, 0]
+upper_HSV = [255, 255, 255]
+
+erode = 1
+dilate = 1
