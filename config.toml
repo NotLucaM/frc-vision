@@ -4,3 +4,8 @@ upper_HSV = [255, 255, 255]
 
 erode = 1
 dilate = 1
+
+[canny]
+threshold1 = 100
+threshold2 = 200
+blur = 3
