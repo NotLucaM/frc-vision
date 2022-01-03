@@ -81,6 +81,7 @@ def on_canny2(val):
     canny_config['threshold2'] = val
     cv.setTrackbarPos("Canny 2", window_detection_name, val)
 
+
 parser = argparse.ArgumentParser(description='Code for Thresholding Operations using inRange tutorial.')
 parser.add_argument('--camera', help='Camera divide number.', default=0, type=int)
 args = parser.parse_args()
@@ -88,7 +89,8 @@ cap = cv.VideoCapture(args.camera)
 cv.namedWindow(window_capture_name)
 cv.namedWindow(window_detection_name)
 cv.createTrackbar(low_H_name, window_detection_name, hsv_config['lower_HSV'][0], max_value_H, on_low_H_thresh_trackbar)
-cv.createTrackbar(high_H_name, window_detection_name, hsv_config['upper_HSV'][0], max_value_H, on_high_H_thresh_trackbar)
+cv.createTrackbar(high_H_name, window_detection_name, hsv_config['upper_HSV'][0], max_value_H,
+                  on_high_H_thresh_trackbar)
 cv.createTrackbar(low_S_name, window_detection_name, hsv_config['lower_HSV'][1], max_value, on_low_S_thresh_trackbar)
 cv.createTrackbar(high_S_name, window_detection_name, hsv_config['upper_HSV'][1], max_value, on_high_S_thresh_trackbar)
 cv.createTrackbar(low_V_name, window_detection_name, hsv_config['lower_HSV'][2], max_value, on_low_V_thresh_trackbar)
@@ -99,22 +101,23 @@ cv.createTrackbar("Canny 1", window_detection_name, canny_config['threshold1'], 
 cv.createTrackbar("Canny 2", window_detection_name, canny_config['threshold2'], 500, on_canny2)
 while True:
 
-    ret, frame = cap.read()
+    # ret, frame = cap.read()
+    frame = cv.imread("data/test_images/2020/wpi_sample_images/BlueGoal-060in-Center.jpg")
+
     if frame is None:
         break
 
-    processed = process(frame, hsv_config)
-    frame_threshold = threshold(processed, hsv_config)
+    processed = process(frame, config)
+    frame_threshold = threshold(processed, config)
     contours = find_contours(frame_threshold)
     gray = cv.cvtColor(processed, cv.COLOR_BGR2GRAY)
-    edges = find_edges(gray, canny_config)
-    edges1 = find_edges(frame_threshold, canny_config)
+    edges = find_edges(gray, config)
+    edges1 = find_edges(frame_threshold, config)
 
     cv.imshow(window_capture_name, frame)
     cv.imshow(window_detection_name, frame_threshold)
     cv.imshow("Edges", edges)
     cv.imshow("Edges 2", edges1)
-
 
     key = cv.waitKey(30)
     if key == ord('q') or key == 27:
